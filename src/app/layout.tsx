@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Newsreader, Inter, Poppins } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/Header";
 import { brand } from "@/lib/content";
 
 // Serif éditorial pour les titres et le texte (même esprit que le texte de Claude)
@@ -63,6 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Pose la classe `js` avant le premier rendu : sans JavaScript, rien n'est
             masqué et le contenu reste lisible. */}
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+        <Header />
         {children}
       </body>
     </html>

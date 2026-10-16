@@ -12,6 +12,10 @@
   --line: #e6e2d8;
 
   /* Style de texte inspiré de Claude : serif pour les titres et le texte, sans-serif pour l'interface */
+  /* Hauteur de la barre fixe : sert de réserve d'espace en haut des pages
+     et de marge d'arrêt pour les ancres. */
+  --nav-h: 104px;
+
   --serif: var(--font-serif), "Iowan Old Style", Georgia, serif;
   --sans: var(--font-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
   --app: var(--font-app), system-ui, sans-serif;
@@ -105,9 +109,38 @@ a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visibl
 .btn-ghost { border-color: rgba(255, 255, 255, 0.45); color: #fff; font-weight: 500; }
 
 /* ---------- Header ---------- */
+/* Barre fixe : elle se masque quand on descend et revient dès qu'on remonte.
+   Elle est en position fixe plutôt que collante car le hero est en
+   `overflow: hidden`, ce qui empêcherait un `position: sticky` de tenir. */
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 60;
+  transition:
+    transform 0.4s var(--ease),
+    background-color 0.3s var(--ease),
+    box-shadow 0.3s var(--ease),
+    backdrop-filter 0.3s var(--ease);
+}
+.site-header--hidden { transform: translateY(-100%); }
+.site-header--stuck {
+  background: rgba(10, 14, 40, 0.82);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+/* La barre se tasse un peu une fois décollée du haut. */
+.site-header--stuck .nav { padding-top: 16px; padding-bottom: 16px; }
+
+/* La barre est hors du flux : on réserve sa hauteur en haut des pages. */
+.hero, .legal-head { padding-top: var(--nav-h); }
+/* Les ancres s'arrêtent sous la barre au lieu de passer dessous. */
+section[id] { scroll-margin-top: calc(var(--nav-h) + 8px); }
+
 .nav {
   display: flex; align-items: center; justify-content: space-between; gap: 24px;
   padding-top: 28px; padding-bottom: 28px;
+  transition: padding 0.3s var(--ease);
 }
 .logo { display: flex; align-items: center; gap: 12px; font-family: var(--serif); font-size: 26px; font-weight: 500; color: #fff; }
 .nav-links { display: flex; gap: 32px; font-family: var(--sans); font-size: 15px; color: var(--lav); }
@@ -120,7 +153,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visibl
 }
 .menu-mobile {
   display: none; flex-direction: column; gap: 4px;
-  position: absolute; left: 20px; right: 20px; top: 92px; z-index: 20;
+  position: absolute; left: 20px; right: 20px; top: calc(100% + 4px); z-index: 20;
   background: var(--night-2); border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 24px;
   padding: 16px; font-family: var(--sans); font-size: 17px; color: var(--lav);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
@@ -132,7 +165,8 @@ a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visibl
 .menu-mobile[hidden] { display: none; }
 
 @media (max-width: 900px) {
-  .nav { position: relative; }
+  :root { --nav-h: 88px; }
+  .nav { position: relative; padding-top: 20px; padding-bottom: 20px; }
   .nav-links { display: none; }
   .nav-cta { display: none; }
   .burger { display: block; }
@@ -481,6 +515,8 @@ a.btn:hover, .store:hover { opacity: 1; }
   .js .hero-title .word { opacity: 1; animation: none; }
   .js .reveal--up, .js .reveal--fade, .js .reveal--rise { filter: none; }
   .btn:hover::before { animation: none; }
+  .site-header { transition: background-color 0.3s linear; }
+  .site-header--hidden { transform: none; }
   .js .timeline .dot { opacity: 1; }
   .is-visible .timeline .dot,
   .is-visible .timeline .dot-current { animation: none; }

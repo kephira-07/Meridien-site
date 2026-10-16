@@ -1,4 +1,3 @@
-import Header from "./Header";
 import Footer from "./Footer";
 import type { LegalDoc } from "@/lib/legal";
 
@@ -7,7 +6,6 @@ export default function LegalLayout({ doc }: { doc: LegalDoc }) {
     <main>
       <div className="legal-head">
         <div className="container">
-          <Header />
           <div className="legal-title">
             <h1 className="h1" style={{ fontSize: "clamp(34px, 4vw, 54px)", marginBottom: 20 }}>
               {doc.title}

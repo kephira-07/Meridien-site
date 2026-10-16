@@ -1,4 +1,3 @@
-import Header from "./Header";
 import Phone from "./Phone";
 import HomeScreen from "./screens/HomeScreen";
 import { hero } from "@/lib/content";
@@ -8,8 +7,6 @@ export default function Hero() {
   return (
     <section id="accueil" className="hero">
       <div className="container">
-        <Header />
-
         <div className="hero-grid">
           <div className="hero-text">
             <div className="badge hero-in" style={{ animationDelay: "0.05s" }}>{hero.badge}</div>
